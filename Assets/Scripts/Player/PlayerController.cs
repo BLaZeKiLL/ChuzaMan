@@ -11,6 +11,8 @@ namespace Chuzaman.Player {
         [SerializeField] private AudioClip _landingSound;
         [SerializeField] private Transform _visual;
         
+        public bool Active { get; set; }
+        
         private Rigidbody2D _rigidbody;
         private AudioSource _audioSource;
         
@@ -23,6 +25,8 @@ namespace Chuzaman.Player {
         }
 
         private void Update() {
+            if (!Active) return;
+            
             if (_rigidbody.velocity == Vector2.zero) {
                 GetInput();
             }
@@ -43,26 +47,29 @@ namespace Chuzaman.Player {
                 _direction = Vector2.right;
                 _moving = true;
             } else if (_moving) { // Landed
-                _moving = false;
-                Debug.Log($"Moving : {_moving}");
-                
-                // Play Sound
-                _audioSource.PlayOneShot(_landingSound);
-
-                // Rotate
-                if (_direction == Vector2.up) {
-                    _visual.rotation = Quaternion.Euler(0, 0, 180);
-                } else if (_direction == Vector2.down) {
-                    _visual.rotation = Quaternion.Euler(0, 0, 0);
-                } else if (_direction == Vector2.right) {
-                    _visual.rotation = Quaternion.Euler(0, 0, 90);
-                } else if (_direction == Vector2.left) {
-                    _visual.rotation = Quaternion.Euler(0, 0, -90);
-                }
-                
-                // Reset Direction
-                _direction = Vector2.zero;
+                OnLanding();
             }
+        }
+
+        private void OnLanding() {
+            _moving = false;
+            
+            // Play Sound
+            _audioSource.PlayOneShot(_landingSound);
+
+            // Rotate
+            if (_direction == Vector2.up) {
+                _visual.rotation = Quaternion.Euler(0, 0, 180);
+            } else if (_direction == Vector2.down) {
+                _visual.rotation = Quaternion.Euler(0, 0, 0);
+            } else if (_direction == Vector2.right) {
+                _visual.rotation = Quaternion.Euler(0, 0, 90);
+            } else if (_direction == Vector2.left) {
+                _visual.rotation = Quaternion.Euler(0, 0, -90);
+            }
+
+            // Reset Direction
+            _direction = Vector2.zero;
         }
 
     }
