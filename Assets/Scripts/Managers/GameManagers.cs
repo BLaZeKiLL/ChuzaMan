@@ -2,6 +2,8 @@
 
 using Chuzaman.Player;
 
+using CodeBlaze.UI;
+
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -20,7 +22,8 @@ namespace Managers {
 
         [SerializeField] private PlayerController _dogga;
         [SerializeField] private PlayerController _chuza;
-
+        [SerializeField] private UIController _ui;
+        
         private Character _activeCharacter;
         
         private void Start() {
@@ -38,6 +41,8 @@ namespace Managers {
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 FlipActiveCharacter();
+            } else if (Input.GetKeyDown(KeyCode.Escape)) {
+                _ui.ShowPauseMenu();
             }
         }
 
