@@ -357,10 +357,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6820332522230742384, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
-      propertyPath: _coinSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 6e72db24c48c0e34cbbf7496f90de160, type: 3}
     - target: {fileID: 6820332522230742385, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.5
@@ -765,10 +761,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1238806086414500571, guid: 67b2eebbc72f8e242b0701d4ad34bd47, type: 3}
-      propertyPath: _coinSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 6e72db24c48c0e34cbbf7496f90de160, type: 3}
     - target: {fileID: 1238806086414500575, guid: 67b2eebbc72f8e242b0701d4ad34bd47, type: 3}
       propertyPath: m_Name
       value: Dogga
@@ -11357,6 +11349,14 @@ PrefabInstance:
     - target: {fileID: 2985116727661620541, guid: 76acb3296239b7647afd9967d2c5593e, type: 3}
       propertyPath: m_Name
       value: Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985116728109157781, guid: 76acb3296239b7647afd9967d2c5593e, type: 3}
+      propertyPath: m_XDamping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985116728109157781, guid: 76acb3296239b7647afd9967d2c5593e, type: 3}
+      propertyPath: m_YDamping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2985116729356104088, guid: 76acb3296239b7647afd9967d2c5593e, type: 3}
       propertyPath: m_BoundingShape2D
