@@ -2778,6 +2778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dogga: {fileID: 1714407740}
   _chuza: {fileID: 665472069}
+  _ui: {fileID: 0}
 --- !u!114 &1714407740 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6820332522230742384, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
@@ -2853,6 +2854,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8509416707270955013, guid: cc66f471b8855bd47a5f2ce13e83616c, type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 0.9999999
+      objectReference: {fileID: 0}
     - target: {fileID: 8509416707270955014, guid: cc66f471b8855bd47a5f2ce13e83616c, type: 3}
       propertyPath: m_Name
       value: MainMenuCamera
