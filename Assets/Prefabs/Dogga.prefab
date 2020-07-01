@@ -130,8 +130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 20
-  _landingSound: {fileID: 8300000, guid: e35d08fe10dc929499385066f7359973, type: 3}
   _visual: {fileID: 1238806085418622334}
+  _landingSound: {fileID: 8300000, guid: e35d08fe10dc929499385066f7359973, type: 3}
+  _coinSound: {fileID: 8300000, guid: cf6242aae53b6424f8c5a677e5dddc74, type: 3}
 --- !u!50 &1238806086414500570
 Rigidbody2D:
   serializedVersion: 4

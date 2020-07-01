@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
+using Chuzaman.Managers;
+
 using UnityEngine;
 
 namespace Chuzaman.Player {
@@ -8,9 +11,11 @@ namespace Chuzaman.Player {
     public class PlayerController : MonoBehaviour {
 
         [SerializeField] private float _speed = 10f;
-
-        [SerializeField] private AudioClip _landingSound;
         [SerializeField] private Transform _visual;
+        
+        [SerializeField] private AudioClip _landingSound;
+        [SerializeField] private AudioClip _coinSound;
+
         
         public bool Active { get; set; }
         
@@ -38,6 +43,13 @@ namespace Chuzaman.Player {
         private void OnCollisionEnter2D(Collision2D other) {
             if (other.gameObject.CompareTag("Player")) {
                 Debug.Log("Dogga Chuza Meet");
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other) {
+            if (other.CompareTag("Coin")) {
+                _audioSource.PlayOneShot(_coinSound);
+                GameManager.Current.AddCoin();
             }
         }
 

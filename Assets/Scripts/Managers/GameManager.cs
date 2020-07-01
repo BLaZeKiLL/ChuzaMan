@@ -28,10 +28,17 @@ namespace Chuzaman.Managers {
         [SerializeField] private PlayerController _chuza;
         [SerializeField] private UIController _ui;
 
-        public event EventHandler<PlayerController> OnCharacterUpdate; 
-        
+        public event EventHandler<PlayerController> OnCharacterUpdate;
+
         private Character _activeCharacter;
 
+        private int _coins;
+
+        public void AddCoin() {
+            _coins++;
+            UIController.Current.SetCoinsCount(_coins);
+        }
+        
         private void Awake() {
             Current = this;
         }
