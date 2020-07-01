@@ -10,7 +10,7 @@ namespace CodeBlaze.UI.Menu {
         [SerializeField] private TextMeshProUGUI _timeTaken;
         [SerializeField] private GameObject _root;
 
-        public void Show(int ticks) {
+        public void Show() {
             _root.SetActive(true);
         }
 

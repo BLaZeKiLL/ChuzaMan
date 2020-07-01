@@ -503,7 +503,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
@@ -615,6 +615,10 @@ PrefabInstance:
     - target: {fileID: 6820332522230742387, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
       propertyPath: m_Name
       value: Chuza
+      objectReference: {fileID: 0}
+    - target: {fileID: 6820332522230742387, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
@@ -756,8 +760,6 @@ GameObject:
   - component: {fileID: 809050292}
   - component: {fileID: 809050291}
   - component: {fileID: 809050293}
-  - component: {fileID: 809050295}
-  - component: {fileID: 809050294}
   m_Layer: 0
   m_Name: Dungeon
   m_TagString: Untagged
@@ -798,7 +800,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2e17b6e24aca3d14896a747037aba3a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2181,175 +2183,10 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
---- !u!66 &809050294
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809050289}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 809050293}
-    m_ColliderPaths:
-    - - X: 100000000
-        Y: -40000000
-      - X: 90000000
-        Y: -40000000
-      - X: 90000000
-        Y: 40000000
-      - X: 100000000
-        Y: 40000000
-      - X: 100000000
-        Y: 60000000
-      - X: -100000000
-        Y: 60000000
-      - X: -100000000
-        Y: 40000000
-      - X: -90000000
-        Y: 40000000
-      - X: -90000000
-        Y: -40000000
-      - X: -100000000
-        Y: -40000000
-      - X: -100000000
-        Y: -60000000
-      - X: 100000000
-        Y: -60000000
-    - - X: -80000000
-        Y: -40000000
-      - X: -80000000
-        Y: -10000000
-      - X: -70000000
-        Y: -10000000
-      - X: -70000000
-        Y: -20000000
-      - X: -30000000
-        Y: -20000000
-      - X: -30000000
-        Y: 20000000
-      - X: -70000000
-        Y: 20000000
-      - X: -70000000
-        Y: 10000000
-      - X: -80000000
-        Y: 10000000
-      - X: -80000000
-        Y: 40000000
-      - X: 80000000
-        Y: 40000000
-      - X: 80000000
-        Y: 10000000
-      - X: 70000000
-        Y: 10000000
-      - X: 70000000
-        Y: 20000000
-      - X: 30000000
-        Y: 20000000
-      - X: 30000000
-        Y: -20000000
-      - X: 70000000
-        Y: -20000000
-      - X: 70000000
-        Y: -10000000
-      - X: 80000000
-        Y: -10000000
-      - X: 80000000
-        Y: -40000000
-    - - X: -60000000
-        Y: -10000000
-      - X: -60000000
-        Y: 10000000
-      - X: -40000000
-        Y: 10000000
-      - X: -40000000
-        Y: -10000000
-    - - X: 40000000
-        Y: -10000000
-      - X: 40000000
-        Y: 10000000
-      - X: 60000000
-        Y: 10000000
-      - X: 60000000
-        Y: -10000000
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 9.99997, y: -6}
-      - {x: 9.99997, y: -4}
-      - {x: 9, y: -3.9999704}
-      - {x: 9.00003, y: 4}
-      - {x: 10, y: 4.000029}
-      - {x: 9.99997, y: 6}
-      - {x: -10, y: 5.999971}
-      - {x: -9.99997, y: 4}
-      - {x: -9, y: 3.9999704}
-      - {x: -9.00003, y: -4}
-      - {x: -10, y: -4.000029}
-      - {x: -9.99997, y: -6}
-    - - {x: 8, y: -3.9999704}
-      - {x: -8, y: -3.9999704}
-      - {x: -7.9999704, y: -1}
-      - {x: -7, y: -1.0000294}
-      - {x: -6.9999704, y: -2}
-      - {x: -3, y: -1.9999708}
-      - {x: -3.0000293, y: 2}
-      - {x: -7, y: 1.9999708}
-      - {x: -7.0000296, y: 1}
-      - {x: -8, y: 1.0000294}
-      - {x: -7.9999704, y: 4}
-      - {x: 8, y: 3.9999704}
-      - {x: 7.9999704, y: 1}
-      - {x: 7, y: 1.0000294}
-      - {x: 6.9999704, y: 2}
-      - {x: 3, y: 1.9999708}
-      - {x: 3.0000293, y: -2}
-      - {x: 7, y: -1.9999708}
-      - {x: 7.0000296, y: -1}
-      - {x: 8, y: -1.0000294}
-    - - {x: 6, y: -0.9999706}
-      - {x: 4, y: -0.9999706}
-      - {x: 4.0000296, y: 1}
-      - {x: 6, y: 0.9999706}
-    - - {x: -4, y: -0.9999706}
-      - {x: -6, y: -0.9999706}
-      - {x: -5.9999704, y: 1}
-      - {x: -4, y: 0.9999706}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
---- !u!50 &809050295
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809050289}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &891542151
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,7 +2547,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
@@ -3011,6 +2848,10 @@ PrefabInstance:
     - target: {fileID: 1238806086414500575, guid: 67b2eebbc72f8e242b0701d4ad34bd47, type: 3}
       propertyPath: m_Name
       value: Dogga
+      objectReference: {fileID: 0}
+    - target: {fileID: 1238806086414500575, guid: 67b2eebbc72f8e242b0701d4ad34bd47, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67b2eebbc72f8e242b0701d4ad34bd47, type: 3}

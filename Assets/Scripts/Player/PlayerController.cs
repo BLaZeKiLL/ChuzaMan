@@ -42,7 +42,8 @@ namespace Chuzaman.Player {
         // Will be called twice
         private void OnCollisionEnter2D(Collision2D other) {
             if (other.gameObject.CompareTag("Player")) {
-                Debug.Log("Dogga Chuza Meet");
+                GameManager.Current.GameWin();
+                // Destroy(gameObject); // makes win transition wierd
             }
         }
 

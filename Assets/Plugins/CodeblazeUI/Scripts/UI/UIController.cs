@@ -27,8 +27,8 @@ namespace CodeBlaze.UI {
             _CoinsCount.text = $"{count}";
         }
 
-        public void ShowWinMenu(int ticks) {
-            _winMenu.Show(ticks);
+        public void ShowWinMenu() {
+            _winMenu.Show();
         }
 
         public void ShowPauseMenu() {

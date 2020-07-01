@@ -7,6 +7,7 @@ namespace CodeBlaze.UI.Menu {
         [SerializeField] private GameObject _root;
 
         public void Show() {
+            Time.timeScale = 0f;
             _root.SetActive(true);
         }
 

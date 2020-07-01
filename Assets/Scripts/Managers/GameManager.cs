@@ -22,21 +22,37 @@ namespace Chuzaman.Managers {
     
     public class GameManager : MonoBehaviour {
 
+        public class CharacterUpdateEventArgs : EventArgs {
+
+            public PlayerController PlayerController { get; set; }
+            public Character Character { get; set; }
+
+        }
+        
         public static GameManager Current;
 
         [SerializeField] private PlayerController _dogga;
         [SerializeField] private PlayerController _chuza;
         [SerializeField] private UIController _ui;
 
-        public event EventHandler<PlayerController> OnCharacterUpdate;
+        public event EventHandler<CharacterUpdateEventArgs> OnCharacterUpdate;
 
         private Character _activeCharacter;
 
         private int _coins;
+        private bool win;
 
         public void AddCoin() {
             _coins++;
             UIController.Current.SetCoinsCount(_coins);
+        }
+
+        public void GameWin() {
+            if (win) return;
+
+            win = true;
+            CameraManager.Current.EnableWinCam();
+            UIController.Current.ShowWinMenu();
         }
         
         private void Awake() {
@@ -44,16 +60,23 @@ namespace Chuzaman.Managers {
         }
 
         private void Start() {
+            win = false;
             var flip = Random.Range(0, 2);
 
             if (flip == 0) {
                 _activeCharacter = Character.CHUZA;
                 _chuza.Active = true;
-                OnCharacterUpdate?.Invoke(this, _chuza);
+                OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
+                    PlayerController = _chuza,
+                    Character = Character.CHUZA
+                });
             } else {
                 _activeCharacter = Character.DOGGA;
                 _dogga.Active = true;
-                OnCharacterUpdate?.Invoke(this, _dogga);
+                OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
+                    PlayerController = _dogga,
+                    Character = Character.DOGGA
+                });
             }
         }
 
@@ -71,13 +94,19 @@ namespace Chuzaman.Managers {
                     _activeCharacter = Character.CHUZA;
                     _chuza.Active = true;
                     _dogga.Active = false;
-                    OnCharacterUpdate?.Invoke(this, _chuza);
+                    OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
+                        PlayerController = _chuza,
+                        Character = Character.CHUZA
+                    });
                     break;
                 case Character.CHUZA:
                     _activeCharacter = Character.DOGGA;
                     _dogga.Active = true;
                     _chuza.Active = false;
-                    OnCharacterUpdate?.Invoke(this, _dogga);
+                    OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
+                        PlayerController = _dogga,
+                        Character = Character.DOGGA
+                    });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
