@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,6 +32,13 @@ namespace Chuzaman.Player {
                 GetInput();
             }
             _rigidbody.velocity = _direction * _speed;
+        }
+
+        // Will be called twice
+        private void OnCollisionEnter2D(Collision2D other) {
+            if (other.gameObject.CompareTag("Player")) {
+                Debug.Log("Dogga Chuza Meet");
+            }
         }
 
         private void GetInput() {
