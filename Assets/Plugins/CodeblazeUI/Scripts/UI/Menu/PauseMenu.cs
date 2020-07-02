@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CodeBlaze.UI.Menu {
 
@@ -13,6 +14,10 @@ namespace CodeBlaze.UI.Menu {
 
         private void Hide() {
             _root.SetActive(false);
+        }
+
+        public void Restart() {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public void Resume() {
