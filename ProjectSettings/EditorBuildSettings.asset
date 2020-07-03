@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level3-BhaiBehen.unity
     guid: 75191856ed5ebef459f60730dd58357c
+  - enabled: 1
+    path: Assets/Scenes/Level4-Drunk.unity
+    guid: e737facea1d6d014a9aa03bbd7d0b86f
   m_configObjects: {}
