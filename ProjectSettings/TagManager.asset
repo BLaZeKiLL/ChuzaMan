@@ -45,3 +45,6 @@ TagManager:
   - name: Character
     uniqueID: 1856646897
     locked: 0
+  - name: pointer
+    uniqueID: 1769381963
+    locked: 0

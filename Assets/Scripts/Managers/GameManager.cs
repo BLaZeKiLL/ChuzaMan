@@ -26,6 +26,8 @@ namespace Chuzaman.Managers {
 
             public PlayerController PlayerController { get; set; }
             public Character Character { get; set; }
+            
+            public Vector3 TargetPosition { get; set; }
 
         }
         
@@ -56,6 +58,7 @@ namespace Chuzaman.Managers {
 
             win = true;
             _audioSource.PlayOneShot(_winSound);
+            PointerManager.Current.Hide();
             CameraManager.Current.EnableWinCam();
             UIController.Current.ShowWinMenu();
         }
@@ -74,14 +77,16 @@ namespace Chuzaman.Managers {
                 _chuza.Active = true;
                 OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
                     PlayerController = _chuza,
-                    Character = Character.CHUZA
+                    Character = Character.CHUZA,
+                    TargetPosition = _dogga.transform.position
                 });
             } else {
                 _activeCharacter = Character.DOGGA;
                 _dogga.Active = true;
                 OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
                     PlayerController = _dogga,
-                    Character = Character.DOGGA
+                    Character = Character.DOGGA,
+                    TargetPosition = _chuza.transform.position
                 });
             }
         }
@@ -102,7 +107,8 @@ namespace Chuzaman.Managers {
                     _dogga.Active = false;
                     OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
                         PlayerController = _chuza,
-                        Character = Character.CHUZA
+                        Character = Character.CHUZA,
+                        TargetPosition = _dogga.transform.position
                     });
                     break;
                 case Character.CHUZA:
@@ -111,7 +117,8 @@ namespace Chuzaman.Managers {
                     _chuza.Active = false;
                     OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
                         PlayerController = _dogga,
-                        Character = Character.DOGGA
+                        Character = Character.DOGGA,
+                        TargetPosition = _chuza.transform.position
                     });
                     break;
                 default:
