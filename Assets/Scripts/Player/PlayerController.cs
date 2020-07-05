@@ -66,16 +66,16 @@ namespace Chuzaman.Player {
         }
 
         private void GetInput() {
-            if (Input.GetKeyDown(KeyCode.W)) {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
                 _direction = Vector2.up;
                 _moving = true;
-            } else if (Input.GetKeyDown(KeyCode.S)) {
+            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
                 _direction = Vector2.down;
                 _moving = true;
-            } else if (Input.GetKeyDown(KeyCode.A)) {
+            } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
                 _direction = Vector2.left;
                 _moving = true;
-            } else if (Input.GetKeyDown(KeyCode.D)) {
+            } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
                 _direction = Vector2.right;
                 _moving = true;
             } else if (_moving) { // Landed
