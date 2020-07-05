@@ -18,6 +18,7 @@ namespace Chuzaman.Player {
         [SerializeField] private AudioClip _activateSound;
 
         public bool Active {
+            get => active;
             set {
                 active = value;
 
@@ -26,7 +27,7 @@ namespace Chuzaman.Player {
                 }
             }
         }
-        
+
         private bool active;
         
         private Rigidbody2D _rigidbody;

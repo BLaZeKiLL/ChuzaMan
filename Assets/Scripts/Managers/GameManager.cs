@@ -35,9 +35,13 @@ namespace Chuzaman.Managers {
         [SerializeField] private PlayerController _chuza;
         [SerializeField] private UIController _ui;
 
+        [SerializeField] private AudioClip _winSound;
+        
         public event EventHandler<CharacterUpdateEventArgs> OnCharacterUpdate;
 
         private Character _activeCharacter;
+
+        private AudioSource _audioSource;
 
         private int _coins;
         private bool win;
@@ -51,12 +55,14 @@ namespace Chuzaman.Managers {
             if (win) return;
 
             win = true;
+            _audioSource.PlayOneShot(_winSound);
             CameraManager.Current.EnableWinCam();
             UIController.Current.ShowWinMenu();
         }
         
         private void Awake() {
             Current = this;
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Start() {
