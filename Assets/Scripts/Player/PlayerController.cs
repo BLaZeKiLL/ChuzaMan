@@ -15,9 +15,19 @@ namespace Chuzaman.Player {
         
         [SerializeField] private AudioClip _landingSound;
         [SerializeField] private AudioClip _coinSound;
+        [SerializeField] private AudioClip _activateSound;
 
+        public bool Active {
+            set {
+                active = value;
+
+                if (active) {
+                    _audioSource.PlayOneShot(_activateSound);
+                }
+            }
+        }
         
-        public bool Active { get; set; }
+        private bool active;
         
         private Rigidbody2D _rigidbody;
         private AudioSource _audioSource;
@@ -25,13 +35,13 @@ namespace Chuzaman.Player {
         private Vector2 _direction;
         private bool _moving;
         
-        private void Start() {
+        private void Awake() {
             _rigidbody = GetComponent<Rigidbody2D>();
             _audioSource = GetComponent<AudioSource>();
         }
 
         private void Update() {
-            if (!Active) return;
+            if (!active) return;
             
             if (_rigidbody.velocity == Vector2.zero) {
                 GetInput();
