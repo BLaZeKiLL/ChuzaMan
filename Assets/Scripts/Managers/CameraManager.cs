@@ -29,8 +29,6 @@ namespace Chuzaman.Managers {
         }
 
         private void OnOnCharacterUpdate(object sender, GameManager.CharacterUpdateEventArgs args) {
-            Debug.Log("Updating Camera Follow");
-
             switch (args.Character) {
                 case Character.DOGGA:
                     EnableDoggaCam();
