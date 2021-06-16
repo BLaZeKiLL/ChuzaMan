@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 041da619699b465a81ee214512b47d60, type: 3}
+  m_Name: Chuza
+  m_EditorClassIdentifier: 
+  Speed: 15
+  Sprite: {fileID: -36218044351304247, guid: c08c11cc98c9028469eb02a42e35965c, type: 3}
+  LandingSound: {fileID: 8300000, guid: e35d08fe10dc929499385066f7359973, type: 3}
+  CoinSound: {fileID: 8300000, guid: 6e72db24c48c0e34cbbf7496f90de160, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 114b1e2970584b94a95bc5ad2f513403, type: 3}

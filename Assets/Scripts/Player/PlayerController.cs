@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using Chuzaman.Entities;
 using Chuzaman.Managers;
 
 using UnityEngine;
@@ -10,20 +11,17 @@ namespace Chuzaman.Player {
 
     public class PlayerController : MonoBehaviour {
 
-        [SerializeField] private float _speed = 10f;
-        [SerializeField] private Transform _visual;
-        
-        [SerializeField] private AudioClip _landingSound;
-        [SerializeField] private AudioClip _coinSound;
-        [SerializeField] private AudioClip _activateSound;
+        [SerializeField] private PlayerData _playerData;
 
+        private SpriteRenderer _visual;
+        
         public bool Active {
             get => active;
             set {
                 active = value;
 
                 if (active) {
-                    _audioSource.PlayOneShot(_activateSound);
+                    _audioSource.PlayOneShot(_playerData.ActivateSound);
                 }
             }
         }
@@ -39,6 +37,11 @@ namespace Chuzaman.Player {
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody2D>();
             _audioSource = GetComponent<AudioSource>();
+            _visual = GetComponentInChildren<SpriteRenderer>();
+        }
+
+        private void Start() {
+            _visual.sprite = _playerData.Sprite;
         }
 
         private void Update() {
@@ -47,7 +50,7 @@ namespace Chuzaman.Player {
             if (_rigidbody.velocity == Vector2.zero) {
                 GetInput();
             }
-            _rigidbody.velocity = _direction * _speed;
+            _rigidbody.velocity = _direction * _playerData.Speed;
         }
 
         // Will be called twice
@@ -60,7 +63,7 @@ namespace Chuzaman.Player {
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Coin")) {
-                _audioSource.PlayOneShot(_coinSound);
+                _audioSource.PlayOneShot(_playerData.CoinSound);
                 GameManager.Current.AddCoin();
             }
         }
@@ -87,17 +90,17 @@ namespace Chuzaman.Player {
             _moving = false;
             
             // Play Sound
-            _audioSource.PlayOneShot(_landingSound);
+            _audioSource.PlayOneShot(_playerData.LandingSound);
 
             // Rotate
             if (_direction == Vector2.up) {
-                _visual.rotation = Quaternion.Euler(0, 0, 180);
+                _visual.transform.rotation = Quaternion.Euler(0, 0, 180);
             } else if (_direction == Vector2.down) {
-                _visual.rotation = Quaternion.Euler(0, 0, 0);
+                _visual.transform.rotation = Quaternion.Euler(0, 0, 0);
             } else if (_direction == Vector2.right) {
-                _visual.rotation = Quaternion.Euler(0, 0, 90);
+                _visual.transform.rotation = Quaternion.Euler(0, 0, 90);
             } else if (_direction == Vector2.left) {
-                _visual.rotation = Quaternion.Euler(0, 0, -90);
+                _visual.transform.rotation = Quaternion.Euler(0, 0, -90);
             }
 
             // Reset Direction
