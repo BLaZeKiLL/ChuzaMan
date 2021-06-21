@@ -1,128 +1,57 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-using Chuzaman.Player;
-
-using Cinemachine;
+using Chuzaman.Net;
 
 using CodeBlaze.UI;
 
-using UnityEngine;
+using MLAPI;
 
-using Random = UnityEngine.Random;
+using UnityEngine;
 
 
 namespace Chuzaman.Managers {
 
-    public enum Character {
-
-        DOGGA,
-        CHUZA
-
-    }
-    
     public class GameManager : MonoBehaviour {
 
-        public class CharacterUpdateEventArgs : EventArgs {
-
-            public PlayerController PlayerController { get; set; }
-            public Character Character { get; set; }
-            
-            public Vector3 TargetPosition { get; set; }
-
-        }
-        
         public static GameManager Current;
 
-        [SerializeField] private PlayerController _dogga;
-        [SerializeField] private PlayerController _chuza;
-        [SerializeField] private UIController _ui;
-
-        [SerializeField] private AudioClip _winSound;
+        [SerializeField] private GameObject _PlayerPrefab;
+        [SerializeField] private UIController _UI;
+        [SerializeField] private Transform _SpawnPoints;
+        [SerializeField] private AudioClip _WinSound;
         
-        public event EventHandler<CharacterUpdateEventArgs> OnCharacterUpdate;
+        private SessionManager _SessionManager;
+        private AudioSource _AudioSource;
 
-        private Character _activeCharacter;
-
-        private AudioSource _audioSource;
-
-        private int _coins;
         private bool win;
-
-        public void AddCoin() {
-            _coins++;
-            UIController.Current.SetCoinsCount(_coins);
+        
+        private void Awake() {
+            Current = this;
+            _AudioSource = GetComponent<AudioSource>();
+            _SessionManager = NetworkManager.Singleton.GetComponent<SessionManager>();
         }
 
         public void GameWin() {
             if (win) return;
 
             win = true;
-            _audioSource.PlayOneShot(_winSound);
+            _AudioSource.PlayOneShot(_WinSound);
             PointerManager.Current.Hide();
-            CameraManager.Current.EnableWinCam();
+            // CameraManager.Current.EnableWinCam();
             UIController.Current.ShowWinMenu();
         }
-        
-        private void Awake() {
-            Current = this;
-            _audioSource = GetComponent<AudioSource>();
-        }
 
-        private void Start() {
-            win = false;
-            var flip = Random.Range(0, 2);
+        public void StartGame() {
+            var pts = new HashSet<Transform>(_SpawnPoints.GetComponentsInChildren<Transform>());
 
-            if (flip == 0) {
-                _activeCharacter = Character.CHUZA;
-                _chuza.Active = true;
-                OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
-                    PlayerController = _chuza,
-                    Character = Character.CHUZA,
-                    TargetPosition = _dogga.transform.position
-                });
-            } else {
-                _activeCharacter = Character.DOGGA;
-                _dogga.Active = true;
-                OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
-                    PlayerController = _dogga,
-                    Character = Character.DOGGA,
-                    TargetPosition = _chuza.transform.position
-                });
-            }
-        }
-
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                FlipActiveCharacter();
-            } else if (Input.GetKeyDown(KeyCode.Escape)) {
-                _ui.ShowPauseMenu();
-            }
-        }
-
-        private void FlipActiveCharacter() {
-            switch (_activeCharacter) {
-                case Character.DOGGA:
-                    _activeCharacter = Character.CHUZA;
-                    _chuza.Active = true;
-                    _dogga.Active = false;
-                    OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
-                        PlayerController = _chuza,
-                        Character = Character.CHUZA,
-                        TargetPosition = _dogga.transform.position
-                    });
-                    break;
-                case Character.CHUZA:
-                    _activeCharacter = Character.DOGGA;
-                    _dogga.Active = true;
-                    _chuza.Active = false;
-                    OnCharacterUpdate?.Invoke(this, new CharacterUpdateEventArgs {
-                        PlayerController = _dogga,
-                        Character = Character.DOGGA,
-                        TargetPosition = _chuza.transform.position
-                    });
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            pts.Remove(_SpawnPoints.transform); // Why does unity return parent also ?
+            
+            foreach (var (player, point) in _SessionManager.Zip(pts, (player, point) => (player, point.localPosition))
+            ) {
+                var net = Instantiate(_PlayerPrefab, point, Quaternion.identity).GetComponent<NetworkObject>();
+                net.SpawnAsPlayerObject(player.ID, Stream.Null);
             }
         }
 

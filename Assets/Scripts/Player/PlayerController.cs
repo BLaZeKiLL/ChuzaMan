@@ -1,32 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using Chuzaman.Entities;
+﻿using Chuzaman.Entities;
 using Chuzaman.Managers;
+
+using MLAPI;
 
 using UnityEngine;
 
 namespace Chuzaman.Player {
 
-    public class PlayerController : MonoBehaviour {
+    public class PlayerController : NetworkBehaviour {
 
         [SerializeField] private PlayerData _playerData;
 
         private SpriteRenderer _visual;
-        
-        public bool Active {
-            get => active;
-            set {
-                active = value;
-
-                if (active) {
-                    _audioSource.PlayOneShot(_playerData.ActivateSound);
-                }
-            }
-        }
-
-        private bool active;
         
         private Rigidbody2D _rigidbody;
         private AudioSource _audioSource;
@@ -41,12 +26,11 @@ namespace Chuzaman.Player {
         }
 
         private void Start() {
+            FindObjectOfType<CameraManager>().EnablePlayerCam(transform);
             _visual.sprite = _playerData.Sprite;
         }
 
         private void Update() {
-            if (!active) return;
-            
             if (_rigidbody.velocity == Vector2.zero) {
                 GetInput();
             }
@@ -64,11 +48,12 @@ namespace Chuzaman.Player {
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Coin")) {
                 _audioSource.PlayOneShot(_playerData.CoinSound);
-                GameManager.Current.AddCoin();
             }
         }
 
         private void GetInput() {
+            if (!IsOwner) return;
+            
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
                 _direction = Vector2.up;
                 _moving = true;

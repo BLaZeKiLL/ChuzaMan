@@ -1,12 +1,9 @@
-﻿using System;
-
-using CodeBlaze.UI.Menu;
+﻿using CodeBlaze.UI.Menu;
 
 using TMPro;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace CodeBlaze.UI {
 

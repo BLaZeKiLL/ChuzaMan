@@ -1,6 +1,4 @@
-﻿using System;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Chuzaman.Managers {
 
@@ -17,18 +15,6 @@ namespace Chuzaman.Managers {
         private void Awake() {
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             Current = this;
-        }
-
-        private void OnEnable() {
-            GameManager.Current.OnCharacterUpdate += OnCharacterUpdate;
-        }
-
-        private void OnDisable() {
-            GameManager.Current.OnCharacterUpdate -= OnCharacterUpdate;
-        }
-
-        private void OnCharacterUpdate(object sender, GameManager.CharacterUpdateEventArgs e) {
-            _target = e.TargetPosition;
         }
 
         private void Update() {

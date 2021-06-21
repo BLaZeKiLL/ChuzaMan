@@ -9,7 +9,6 @@ namespace Chuzaman.Entities {
         public Sprite Sprite;
         public AudioClip LandingSound;
         public AudioClip CoinSound;
-        public AudioClip ActivateSound;
 
     }
 
