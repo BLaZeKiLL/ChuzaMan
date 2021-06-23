@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using Chuzaman.Managers;
+
+using TMPro;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,20 +9,26 @@ namespace CodeBlaze.UI.Menu {
 
     public class WinMenu : MonoBehaviour {
 
-        [SerializeField] private TextMeshProUGUI _timeTaken;
-        [SerializeField] private GameObject _root;
+        [SerializeField] private TextMeshProUGUI _TimeTaken;
+        [SerializeField] private GameObject _Root;
+        [SerializeField] private GameObject _Title;
+        [SerializeField] private GameObject _Waiting;
+        [SerializeField] private GameObject _NextButton;
 
         public void Show() {
-            _root.SetActive(true);
+            _Root.SetActive(true);
         }
 
         public void Hide() {
-            _root.SetActive(false);
+            _Root.SetActive(false);
         }
 
         public void NextLevel() {
             Time.timeScale = 1f;
-            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
+            _Title.SetActive(false);
+            _NextButton.SetActive(false);
+            _Waiting.SetActive(true);
+            FindObjectOfType<GameManager>().NextLevel();
         }
 
     }

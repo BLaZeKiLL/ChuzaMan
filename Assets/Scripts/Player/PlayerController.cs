@@ -73,12 +73,10 @@ namespace Chuzaman.Player {
             _rigidbody.velocity = _direction * _PlayerData.Speed;
             _update = false;
         }
-
-        // Will be called twice
+        
         private void OnCollisionEnter2D(Collision2D other) {
-            if (other.gameObject.CompareTag("Player")) {
-                GameManager.Current.GameWin();
-                // Destroy(gameObject); // makes win transition wierd
+            if (other.gameObject.CompareTag("Player") && IsOwner) {
+                FindObjectOfType<GameManager>().GameWin();
             }
         }
 

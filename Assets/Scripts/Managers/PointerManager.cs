@@ -3,8 +3,6 @@
 namespace Chuzaman.Managers {
 
     public class PointerManager : MonoBehaviour {
-
-        public static PointerManager Current;
         
         [SerializeField] private float _viewThreshold = 3f;
 
@@ -14,7 +12,6 @@ namespace Chuzaman.Managers {
 
         private void Awake() {
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            Current = this;
         }
 
         private void Update() {

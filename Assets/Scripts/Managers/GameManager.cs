@@ -9,6 +9,7 @@ using Chuzaman.Player;
 using CodeBlaze.UI;
 
 using MLAPI;
+using MLAPI.Messaging;
 using MLAPI.Serialization.Pooled;
 
 using UnityEngine;
@@ -17,21 +18,18 @@ using UnityEngine;
 namespace Chuzaman.Managers {
 
     public class GameManager : NetworkBehaviour {
-
-        public static GameManager Current;
-
+        
         [SerializeField] private GameObject _PlayerPrefab;
-        [SerializeField] private UIController _UI;
         [SerializeField] private Transform _SpawnPoints;
         [SerializeField] private AudioClip _WinSound;
 
         private SessionManager _SessionManager;
         private AudioSource _AudioSource;
+        private int _NextCount;
 
         private bool win;
         
         private void Awake() {
-            Current = this;
             _AudioSource = GetComponent<AudioSource>();
             _SessionManager = NetworkManager.Singleton.GetComponent<SessionManager>();
         }
@@ -41,9 +39,9 @@ namespace Chuzaman.Managers {
 
             win = true;
             _AudioSource.PlayOneShot(_WinSound);
-            PointerManager.Current.Hide();
-            // CameraManager.Current.EnableWinCam();
-            UIController.Current.ShowWinMenu();
+            FindObjectOfType<PointerManager>().Hide();
+            FindObjectOfType<CameraManager>().EnableWinCam();
+            FindObjectOfType<UIController>().ShowWinMenu();
         }
 
         public void StartGame() {
@@ -63,6 +61,17 @@ namespace Chuzaman.Managers {
                 
                 obj.GetComponent<NetworkObject>().SpawnAsPlayerObject(player.ID, stream);
             }
+        }
+
+        public void NextLevel() {
+            NextLevelServerRpc();
+        }
+
+        [ServerRpc]
+        private void NextLevelServerRpc() {
+            _NextCount++;
+            var netController = NetworkManager.Singleton.GetComponent<NetworkController>();
+            if (_NextCount == netController.PlayerCount) netController.LoadNextLevel();
         }
 
     }

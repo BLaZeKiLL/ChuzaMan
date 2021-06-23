@@ -16,7 +16,7 @@ namespace Chuzaman.Net {
 
     public class NetworkController : MonoBehaviour {
 
-        [SerializeField] private int _PlayerCount = 2;
+        public int PlayerCount = 2;
 
         private NetworkManager _Manager;
         private SessionManager _SessionManager;
@@ -44,11 +44,19 @@ namespace Chuzaman.Net {
             _Manager.NetworkConfig.ConnectionData = new []{ (byte) character };
             _Manager.StartClient();
         }
+        
+        public void LoadNextLevel() {
+            _CurrentLevel = _CurrentLevel % 7 + 1;
+            CBSL.Logging.Logger.Info<NetworkController>($"Switching Scene : Level{_CurrentLevel}");
+            var progress = NetworkSceneManager.SwitchScene($"Level{_CurrentLevel}");
+
+            progress.OnComplete += OnSceneSwitchComplete;
+        }
 
         private void OnConnectionApprovalCallback(byte[] connectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback) {
             var character = (Character) connectionData[0];
 
-            if (_SessionManager.Count() == _PlayerCount) {
+            if (_SessionManager.Count() == PlayerCount) {
                 CBSL.Logging.Logger.Warn<NetworkController>("Max player count reached");
                 callback(false, null, false, null, null);
             }
@@ -58,7 +66,7 @@ namespace Chuzaman.Net {
         }
 
         private void OnClientConnectedCallback(ulong id) {
-            if (_SessionManager.Count() == _PlayerCount) {
+            if (_SessionManager.Count() == PlayerCount) {
                 LoadNextLevel();
             }
         }
@@ -76,15 +84,7 @@ namespace Chuzaman.Net {
         private void OnServerConnectedCallback(ulong id) {
             FindObjectOfType<MainMenuController>().ShowWaiting();
         }
-        
-        private void LoadNextLevel() {
-            _CurrentLevel = _CurrentLevel % 7 + 1;
-            CBSL.Logging.Logger.Info<NetworkController>($"Switching Scene : Level{_CurrentLevel}");
-            var progress = NetworkSceneManager.SwitchScene($"Level{_CurrentLevel}");
 
-            progress.OnComplete += OnSceneSwitchComplete;
-        }
-        
         private void OnSceneSwitchComplete(bool timeout) {
             if (timeout) return; // Disconnect all, log error & reset
             

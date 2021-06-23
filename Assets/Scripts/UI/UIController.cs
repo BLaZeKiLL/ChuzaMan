@@ -9,16 +9,10 @@ namespace CodeBlaze.UI {
 
     public class UIController : MonoBehaviour {
 
-        public static UIController Current;
-        
         [SerializeField] private TextMeshProUGUI _CoinsCount;
         [SerializeField] private WinMenu _winMenu;
         [SerializeField] private PauseMenu _pauseMenu;
         [SerializeField] private GameOverMenu _gameOverMenu;
-
-        private void Awake() {
-            Current = this;
-        }
 
         public void SetCoinsCount(int count) {
             _CoinsCount.text = $"{count}";
