@@ -12,6 +12,8 @@ namespace Editor.Build {
         public static void ClientServerBuild() {
             ClientBuild();
             ServerBuild();
+            
+            EditorUtility.RevealInFinder(SERVER_PATH);
         }
         
         [MenuItem("Build/Client")]

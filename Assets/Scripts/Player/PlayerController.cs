@@ -24,8 +24,9 @@ namespace Chuzaman.Player {
         private Rigidbody2D _rigidbody;
         private AudioSource _audioSource;
         
+        private NetworkVariable<Vector2> _input;
         private Vector2 _direction;
-        private bool _moving;
+        private bool _update;
         
         private bool _initialized;
         
@@ -34,13 +35,9 @@ namespace Chuzaman.Player {
             _audioSource = GetComponent<AudioSource>();
             _visual = GetComponentInChildren<SpriteRenderer>();
 
-            // _direction = new NetworkVariable<Vector2>(new NetworkVariableSettings {
-            //     WritePermission = NetworkVariablePermission.OwnerOnly
-            // }, Vector2.zero);
-            //
-            // _moving = new NetworkVariable<bool>(new NetworkVariableSettings {
-            //     WritePermission = NetworkVariablePermission.OwnerOnly
-            // }, false);
+            _input = new NetworkVariable<Vector2>(new NetworkVariableSettings {
+                WritePermission = NetworkVariablePermission.OwnerOnly
+            }, Vector2.zero);
         }
 
         public override void NetworkStart(Stream stream) {
@@ -51,6 +48,12 @@ namespace Chuzaman.Player {
 
             if (IsOwner) {
                 FindObjectOfType<CameraManager>().EnablePlayerCam(transform);
+            } else {
+                _input.OnValueChanged += (value, newValue) => {
+                    _direction = newValue;
+                    _update = true;
+                    CBSL.Logging.Logger.Info<PlayerController>($"New Direction : {_direction}");
+                };
             }
 
             _initialized = true;
@@ -59,15 +62,16 @@ namespace Chuzaman.Player {
         private void Update() {
             if (!_initialized) return;
             
-            if (_rigidbody.velocity == Vector2.zero) {
-                if (_moving) {
+            if (_rigidbody.velocity == Vector2.zero && !_update) {
+                if (_direction != Vector2.zero) {
                     Land();
                 } else if (IsOwner) {
-                    _direction = GetInput();
+                    GetInput();
                 }
             }
             
             _rigidbody.velocity = _direction * _PlayerData.Speed;
+            _update = false;
         }
 
         // Will be called twice
@@ -84,30 +88,26 @@ namespace Chuzaman.Player {
             }
         }
 
-        private Vector2 GetInput() {
+        private void GetInput() {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                _moving = true;
-                return Vector2.up;
+                _direction = Vector2.up;
+                _input.Value = _direction;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                _moving = true;
-                return Vector2.down;
+                _direction = Vector2.down;
+                _input.Value = _direction;
             }
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                _moving = true;
-                return Vector2.left;
+                _direction = Vector2.left;
+                _input.Value = _direction;
             }
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                _moving = true;
-                return Vector2.right;
+                _direction = Vector2.right;
+                _input.Value = _direction;
             }
-            
-            return Vector2.zero;
         }
 
         private void Land() {
-            _moving = false;
-            
             // Play Sound
             _audioSource.PlayOneShot(_PlayerData.LandingSound);
 
