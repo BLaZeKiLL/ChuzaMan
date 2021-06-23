@@ -41,25 +41,20 @@ namespace Chuzaman.Net {
         }
         
         public void StartClient(Character character) {
-            _Manager.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(character.ToString());
+            _Manager.NetworkConfig.ConnectionData = new []{ (byte) character };
             _Manager.StartClient();
         }
 
         private void OnConnectionApprovalCallback(byte[] connectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback) {
-            var data = Encoding.ASCII.GetString(connectionData);
+            var character = (Character) connectionData[0];
 
             if (_SessionManager.Count() == _PlayerCount) {
                 CBSL.Logging.Logger.Warn<NetworkController>("Max player count reached");
                 callback(false, null, false, null, null);
             }
             
-            if (Enum.TryParse(data, out Character character)) {
-                _SessionManager.AddPlayer(clientId, character);
-                callback(false, null, true, null, null);
-            } else {
-                CBSL.Logging.Logger.Error<NetworkController>($"Invalid Connection Data : {data}");
-                callback(false, null, false, null, null);
-            }
+            _SessionManager.AddPlayer(clientId, character);
+            callback(false, null, true, null, null);
         }
 
         private void OnClientConnectedCallback(ulong id) {

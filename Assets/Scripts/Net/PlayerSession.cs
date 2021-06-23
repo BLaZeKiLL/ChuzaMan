@@ -8,7 +8,7 @@ namespace Chuzaman.Net {
         public ulong ID { get; set; }
         public Character Character { get; set; }
         public int Coins { get; set; }
-        
+
     }
 
 }

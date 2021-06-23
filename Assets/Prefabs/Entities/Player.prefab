@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0910217ec5a857488e8c7ca8668f648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerData: {fileID: 11400000, guid: bb8679df0059b9f43a151f6daa82e690, type: 2}
+  _ChuzaData: {fileID: 11400000, guid: 1bb58544e8daa084d8ded7df3c5850b4, type: 2}
+  _DoggaData: {fileID: 11400000, guid: bb8679df0059b9f43a151f6daa82e690, type: 2}
 --- !u!114 &4824197375479529233
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +30,10 @@ namespace Chuzaman.Net {
         public void RemovePlayer(ulong id) {
             Sessions.Remove(id);
             CBSL.Logging.Logger.Info<SessionManager>($"Session Removed For ID ; {id}");
+        }
+
+        public PlayerSession GetPlayer(ulong id) {
+            return Sessions[id];
         }
         
         public IEnumerator<PlayerSession> GetEnumerator() {

@@ -2,18 +2,21 @@
 using System.IO;
 using System.Linq;
 
+using Chuzaman.Entities;
 using Chuzaman.Net;
+using Chuzaman.Player;
 
 using CodeBlaze.UI;
 
 using MLAPI;
+using MLAPI.Serialization.Pooled;
 
 using UnityEngine;
 
 
 namespace Chuzaman.Managers {
 
-    public class GameManager : MonoBehaviour {
+    public class GameManager : NetworkBehaviour {
 
         public static GameManager Current;
 
@@ -21,7 +24,7 @@ namespace Chuzaman.Managers {
         [SerializeField] private UIController _UI;
         [SerializeField] private Transform _SpawnPoints;
         [SerializeField] private AudioClip _WinSound;
-        
+
         private SessionManager _SessionManager;
         private AudioSource _AudioSource;
 
@@ -50,8 +53,15 @@ namespace Chuzaman.Managers {
             
             foreach (var (player, point) in _SessionManager.Zip(pts, (player, point) => (player, point.localPosition))
             ) {
-                var net = Instantiate(_PlayerPrefab, point, Quaternion.identity).GetComponent<NetworkObject>();
-                net.SpawnAsPlayerObject(player.ID, Stream.Null);
+                var obj = Instantiate(_PlayerPrefab, point, Quaternion.identity);
+
+                using var stream = PooledNetworkBuffer.Get();
+                using var writer = PooledNetworkWriter.Get(stream);
+                
+                writer.WriteByte((byte) player.Character);
+                writer.WritePadBits();
+                
+                obj.GetComponent<NetworkObject>().SpawnAsPlayerObject(player.ID, stream);
             }
         }
 
