@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   m_Layer: 0
-  m_Name: MainMenuCamera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1031,7 +1031,7 @@ RectTransform:
   - {fileID: 154010971}
   - {fileID: 1198519648}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2660,7 +2660,7 @@ Transform:
   m_Children:
   - {fileID: 809050290}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &993776050
 GameObject:
@@ -3081,7 +3081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87af99482ba84401af32c47b53dd3945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PlayerCount: 2
+  PlayerCount: 2
 --- !u!1 &1411841951
 GameObject:
   m_ObjectHideFlags: 0

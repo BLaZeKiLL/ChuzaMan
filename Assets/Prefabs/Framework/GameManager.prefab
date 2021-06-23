@@ -44,10 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca66f5715eff449bbd11aeedc9468862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dogga: {fileID: 0}
-  _chuza: {fileID: 0}
-  _ui: {fileID: 0}
-  _winSound: {fileID: 8300000, guid: a86b9c2c1c3c4ac40889f64675359248, type: 3}
+  _PlayerPrefab: {fileID: 6820332522230742387, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
+  _SpawnPoints: {fileID: 0}
+  _WinSound: {fileID: 8300000, guid: a86b9c2c1c3c4ac40889f64675359248, type: 3}
 --- !u!82 &-7795909370907735151
 AudioSource:
   m_ObjectHideFlags: 0
