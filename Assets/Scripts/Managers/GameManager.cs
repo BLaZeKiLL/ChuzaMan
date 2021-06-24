@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
-using Chuzaman.Entities;
 using Chuzaman.Net;
 using Chuzaman.Player;
 
@@ -49,8 +47,7 @@ namespace Chuzaman.Managers {
 
             pts.Remove(_SpawnPoints.transform); // Why does unity return parent also ?
             
-            foreach (var (player, point) in _SessionManager.Zip(pts, (player, point) => (player, point.localPosition))
-            ) {
+            foreach (var (player, point) in _SessionManager.Zip(pts, (player, point) => (player, point.localPosition))) {
                 var obj = Instantiate(_PlayerPrefab, point, Quaternion.identity);
 
                 using var stream = PooledNetworkBuffer.Get();
@@ -59,7 +56,9 @@ namespace Chuzaman.Managers {
                 writer.WriteByte((byte) player.Character);
                 writer.WritePadBits();
                 
-                obj.GetComponent<NetworkObject>().SpawnAsPlayerObject(player.ID, stream);
+                var net = obj.GetComponent<NetworkObject>();
+
+                net.SpawnAsPlayerObject(player.ID, stream, true);
             }
         }
 
@@ -67,11 +66,14 @@ namespace Chuzaman.Managers {
             NextLevelServerRpc();
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void NextLevelServerRpc() {
             _NextCount++;
             var netController = NetworkManager.Singleton.GetComponent<NetworkController>();
-            if (_NextCount == netController.PlayerCount) netController.LoadNextLevel();
+
+            if (_NextCount == netController.PlayerCount) {
+                netController.LoadNextLevel();
+            }
         }
 
     }

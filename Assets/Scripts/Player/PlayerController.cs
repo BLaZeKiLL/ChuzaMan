@@ -3,10 +3,8 @@ using System.IO;
 
 using Chuzaman.Entities;
 using Chuzaman.Managers;
-using Chuzaman.Net;
 
 using MLAPI;
-using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using MLAPI.Serialization.Pooled;
 
@@ -36,7 +34,7 @@ namespace Chuzaman.Player {
             _visual = GetComponentInChildren<SpriteRenderer>();
 
             _input = new NetworkVariable<Vector2>(new NetworkVariableSettings {
-                WritePermission = NetworkVariablePermission.OwnerOnly
+                WritePermission = NetworkVariablePermission.OwnerOnly,
             }, Vector2.zero);
         }
 
@@ -52,7 +50,6 @@ namespace Chuzaman.Player {
                 _input.OnValueChanged += (value, newValue) => {
                     _direction = newValue;
                     _update = true;
-                    CBSL.Logging.Logger.Info<PlayerController>($"New Direction : {_direction}");
                 };
             }
 

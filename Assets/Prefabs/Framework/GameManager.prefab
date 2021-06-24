@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696582427268136445}
   - component: {fileID: 696582427268136444}
+  - component: {fileID: 4858495977191037633}
   - component: {fileID: -7795909370907735151}
   m_Layer: 0
   m_Name: GameManager
@@ -47,6 +48,23 @@ MonoBehaviour:
   _PlayerPrefab: {fileID: 6820332522230742387, guid: 633eca980af0e3744b63b29a7b591a00, type: 3}
   _SpawnPoints: {fileID: 0}
   _WinSound: {fileID: 8300000, guid: a86b9c2c1c3c4ac40889f64675359248, type: 3}
+--- !u!114 &4858495977191037633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696582427268136446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkInstanceId: 0
+  PrefabHash: 13494567273885427380
+  PrefabHashGenerator: GameManager
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
 --- !u!82 &-7795909370907735151
 AudioSource:
   m_ObjectHideFlags: 0

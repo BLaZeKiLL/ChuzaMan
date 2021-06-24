@@ -1,15 +1,11 @@
 ﻿using Chuzaman.Managers;
 
-using TMPro;
-
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CodeBlaze.UI.Menu {
 
     public class WinMenu : MonoBehaviour {
 
-        [SerializeField] private TextMeshProUGUI _TimeTaken;
         [SerializeField] private GameObject _Root;
         [SerializeField] private GameObject _Title;
         [SerializeField] private GameObject _Waiting;

@@ -1,5 +1,4 @@
 ﻿using Chuzaman.Entities;
-using Chuzaman.Managers;
 
 namespace Chuzaman.Net {
 

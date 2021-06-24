@@ -883,8 +883,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985d3bbc41de4b76bb36fccde9b01e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeTaken: {fileID: 0}
-  _root: {fileID: 2922193568587523642}
+  _TimeTaken: {fileID: 2922193568308378910}
+  _Root: {fileID: 2922193568587523642}
+  _Title: {fileID: 2922193568308378908}
+  _Waiting: {fileID: 2129797236914618657}
+  _NextButton: {fileID: 2922193568660294996}
 --- !u!114 &2922193567005138402
 MonoBehaviour:
   m_ObjectHideFlags: 0
