@@ -1,4 +1,6 @@
-﻿using CodeBlaze.UI.Menu;
+﻿using Chuzaman.Entities;
+
+using CodeBlaze.UI.Menu;
 
 using TMPro;
 
@@ -18,8 +20,8 @@ namespace CodeBlaze.UI {
             _CoinsCount.text = $"{count}";
         }
 
-        public void ShowWinMenu() {
-            _winMenu.Show();
+        public void ShowWinMenu(WinData data) {
+            _winMenu.Show(data);
         }
 
         public void ShowPauseMenu() {

@@ -3,10 +3,15 @@ using System.IO;
 
 using Chuzaman.Entities;
 using Chuzaman.Managers;
+using Chuzaman.Net;
+
+using CodeBlaze.UI;
 
 using MLAPI;
+using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using MLAPI.Serialization.Pooled;
+using MLAPI.Spawning;
 
 using UnityEngine;
 
@@ -18,22 +23,26 @@ namespace Chuzaman.Player {
         [SerializeField] private PlayerData _DoggaData;
         
         private PlayerData _PlayerData;
-        private SpriteRenderer _visual;
-        private Rigidbody2D _rigidbody;
-        private AudioSource _audioSource;
+        private SpriteRenderer _Visual;
+        private Rigidbody2D _Rigidbody;
+        private AudioSource _AudioSource;
+        private SessionManager _SessionManager;
+        private UIController _UI;
         
-        private NetworkVariable<Vector2> _input;
-        private Vector2 _direction;
-        private bool _update;
-        
-        private bool _initialized;
+        private NetworkVariable<Vector2> _Input;
+        private Vector2 _Direction;
+        private bool _Update;
+        private bool _Initialized;
+        private ulong _ID;
+        private int _Coins;
         
         private void Awake() {
-            _rigidbody = GetComponent<Rigidbody2D>();
-            _audioSource = GetComponent<AudioSource>();
-            _visual = GetComponentInChildren<SpriteRenderer>();
+            _Rigidbody = GetComponent<Rigidbody2D>();
+            _AudioSource = GetComponent<AudioSource>();
+            _Visual = GetComponentInChildren<SpriteRenderer>();
+            _UI = FindObjectOfType<UIController>();
 
-            _input = new NetworkVariable<Vector2>(new NetworkVariableSettings {
+            _Input = new NetworkVariable<Vector2>(new NetworkVariableSettings {
                 WritePermission = NetworkVariablePermission.OwnerOnly,
             }, Vector2.zero);
         }
@@ -42,83 +51,92 @@ namespace Chuzaman.Player {
             using var reader = PooledNetworkReader.Get(stream);
             
             _PlayerData = GetPlayerData((Character) reader.ReadByte());
-            _visual.sprite = _PlayerData.Sprite;
+            _Visual.sprite = _PlayerData.Sprite;
 
             if (IsOwner) {
                 FindObjectOfType<CameraManager>().EnablePlayerCam(transform);
             } else {
-                _input.OnValueChanged += (value, newValue) => {
-                    _direction = newValue;
-                    _update = true;
+                _Input.OnValueChanged += (value, newValue) => {
+                    _Direction = newValue;
+                    _Update = true;
                 };
             }
 
-            _initialized = true;
+            _ID = GetComponent<NetworkObject>().OwnerClientId;
+            _SessionManager = NetworkManager.Singleton.GetComponent<SessionManager>();
+            _Initialized = true;
         }
 
         private void Update() {
-            if (!_initialized) return;
+            if (!_Initialized) return;
             
-            if (_rigidbody.velocity == Vector2.zero && !_update) {
-                if (_direction != Vector2.zero) {
+            if (_Rigidbody.velocity == Vector2.zero && !_Update) {
+                if (_Direction != Vector2.zero) {
                     Land();
                 } else if (IsOwner) {
                     GetInput();
                 }
             }
             
-            _rigidbody.velocity = _direction * _PlayerData.Speed;
-            _update = false;
+            _Rigidbody.velocity = _Direction * _PlayerData.Speed;
+            _Update = false;
         }
         
         private void OnCollisionEnter2D(Collision2D other) {
-            if (other.gameObject.CompareTag("Player") && IsOwner) {
+            if (other.gameObject.CompareTag("Player") && IsServer) {
                 FindObjectOfType<GameManager>().GameWin();
             }
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if (other.CompareTag("Coin")) {
-                _audioSource.PlayOneShot(_PlayerData.CoinSound);
+            if (!other.CompareTag("Coin")) return;
+
+            _AudioSource.PlayOneShot(_PlayerData.CoinSound);
+
+            if (IsServer) {
+                Destroy(NetworkSpawnManager.SpawnedObjects[other.GetComponent<NetworkObject>().NetworkObjectId]);
+                _SessionManager.AddCoin(_ID);
+            } else if (IsOwner) {
+                _UI.SetCoinsCount(++_Coins);
             }
         }
 
         private void GetInput() {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                _direction = Vector2.up;
-                _input.Value = _direction;
+                _Direction = Vector2.up;
+                _Input.Value = _Direction;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                _direction = Vector2.down;
-                _input.Value = _direction;
+                _Direction = Vector2.down;
+                _Input.Value = _Direction;
             }
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                _direction = Vector2.left;
-                _input.Value = _direction;
+                _Direction = Vector2.left;
+                _Input.Value = _Direction;
             }
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                _direction = Vector2.right;
-                _input.Value = _direction;
+                _Direction = Vector2.right;
+                _Input.Value = _Direction;
             }
         }
 
         private void Land() {
             // Play Sound
-            _audioSource.PlayOneShot(_PlayerData.LandingSound);
+            _AudioSource.PlayOneShot(_PlayerData.LandingSound);
 
             // Rotate
-            if (_direction == Vector2.up) {
-                _visual.transform.rotation = Quaternion.Euler(0, 0, 180);
-            } else if (_direction == Vector2.down) {
-                _visual.transform.rotation = Quaternion.Euler(0, 0, 0);
-            } else if (_direction == Vector2.right) {
-                _visual.transform.rotation = Quaternion.Euler(0, 0, 90);
-            } else if (_direction == Vector2.left) {
-                _visual.transform.rotation = Quaternion.Euler(0, 0, -90);
+            if (_Direction == Vector2.up) {
+                _Visual.transform.rotation = Quaternion.Euler(0, 0, 180);
+            } else if (_Direction == Vector2.down) {
+                _Visual.transform.rotation = Quaternion.Euler(0, 0, 0);
+            } else if (_Direction == Vector2.right) {
+                _Visual.transform.rotation = Quaternion.Euler(0, 0, 90);
+            } else if (_Direction == Vector2.left) {
+                _Visual.transform.rotation = Quaternion.Euler(0, 0, -90);
             }
 
             // Reset Direction
-            _direction = Vector2.zero;
+            _Direction = Vector2.zero;
         }
         
         private PlayerData GetPlayerData(Character character) {

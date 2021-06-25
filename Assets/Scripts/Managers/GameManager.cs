@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Chuzaman.Entities;
 using Chuzaman.Net;
 using Chuzaman.Player;
 
@@ -33,13 +34,11 @@ namespace Chuzaman.Managers {
         }
 
         public void GameWin() {
-            if (win) return;
+            if (win && !IsServer) return;
 
             win = true;
-            _AudioSource.PlayOneShot(_WinSound);
-            FindObjectOfType<PointerManager>().Hide();
-            FindObjectOfType<CameraManager>().EnableWinCam();
-            FindObjectOfType<UIController>().ShowWinMenu();
+            
+            ShowWinScreenClientRpc(_SessionManager.GetWinData());
         }
 
         public void StartGame() {
@@ -74,6 +73,14 @@ namespace Chuzaman.Managers {
             if (_NextCount == netController.PlayerCount) {
                 netController.LoadNextLevel();
             }
+        }
+
+        [ClientRpc]
+        private void ShowWinScreenClientRpc(WinData data) {
+            _AudioSource.PlayOneShot(_WinSound);
+            FindObjectOfType<PointerManager>().Hide();
+            FindObjectOfType<CameraManager>().EnableWinCam();
+            FindObjectOfType<UIController>().ShowWinMenu(data);
         }
 
     }

@@ -25,6 +25,10 @@ namespace Chuzaman.Net {
             CBSL.Logging.Logger.Info<SessionManager>($"Session Created For ID : {id}");
         }
 
+        public void AddCoin(ulong id) {
+            Sessions[id].Coins++;
+        }
+
         public void RemovePlayer(ulong id) {
             Sessions.Remove(id);
             CBSL.Logging.Logger.Info<SessionManager>($"Session Removed For ID ; {id}");
@@ -32,6 +36,13 @@ namespace Chuzaman.Net {
 
         public PlayerSession GetPlayer(ulong id) {
             return Sessions[id];
+        }
+
+        public WinData GetWinData() {
+            return new WinData {
+                ChuzaCoins = Sessions.First(x => x.Value.Character == Character.CHUZA).Value.Coins,
+                DoggaCoins = Sessions.First(x => x.Value.Character == Character.DOGGA).Value.Coins
+            };
         }
         
         public IEnumerator<PlayerSession> GetEnumerator() {

@@ -1,4 +1,7 @@
-﻿using Chuzaman.Managers;
+﻿using Chuzaman.Entities;
+using Chuzaman.Managers;
+
+using TMPro;
 
 using UnityEngine;
 
@@ -11,8 +14,14 @@ namespace CodeBlaze.UI.Menu {
         [SerializeField] private GameObject _Waiting;
         [SerializeField] private GameObject _NextButton;
 
-        public void Show() {
+        [SerializeField] private TextMeshProUGUI _ChuzaCoins;
+        [SerializeField] private TextMeshProUGUI _DoggaCoins;
+
+        public void Show(WinData data) {
             _Root.SetActive(true);
+
+            _ChuzaCoins.text = $"{data.ChuzaCoins}";
+            _DoggaCoins.text = $"{data.DoggaCoins}";
         }
 
         public void Hide() {

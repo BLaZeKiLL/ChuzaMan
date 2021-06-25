@@ -22,7 +22,7 @@ namespace Editor.Build {
 
             var clientOptions = new BuildPlayerOptions {
                 scenes = EditorBuildSettingsScene.GetActiveSceneList(scenes),
-                locationPathName = $"{CLIENT_PATH}/{EXE_NAME}_Client.exe",
+                locationPathName = $"{CLIENT_PATH}/{EXE_NAME}.exe",
                 target = BuildTarget.StandaloneWindows64
             };
 
@@ -35,7 +35,7 @@ namespace Editor.Build {
 
             var serverOptions = new BuildPlayerOptions {
                 scenes = EditorBuildSettingsScene.GetActiveSceneList(scenes),
-                locationPathName = $"{SERVER_PATH}/{EXE_NAME}_Server.exe",
+                locationPathName = $"{SERVER_PATH}/{EXE_NAME}.exe",
                 target = BuildTarget.StandaloneWindows64,
                 options = BuildOptions.EnableHeadlessMode
             };
