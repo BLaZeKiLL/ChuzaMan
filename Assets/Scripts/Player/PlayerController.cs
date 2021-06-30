@@ -60,6 +60,8 @@ namespace Chuzaman.Player {
                     _Direction = newValue;
                     _Update = true;
                 };
+
+                FindObjectOfType<PointerManager>().Target = transform;
             }
 
             _ID = GetComponent<NetworkObject>().OwnerClientId;

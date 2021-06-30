@@ -4,18 +4,20 @@ namespace Chuzaman.Managers {
 
     public class PointerManager : MonoBehaviour {
         
-        [SerializeField] private float _viewThreshold = 3f;
+        [SerializeField] private float _viewThreshold = 10f;
 
-        private SpriteRenderer _spriteRenderer;
+        public Transform Target { get; set; }
         
-        private Vector3 _target;
+        private SpriteRenderer _Sprite;
 
         private void Awake() {
-            _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            _Sprite = GetComponentInChildren<SpriteRenderer>();
         }
 
         private void Update() {
-            var diff = _target - transform.position;
+            if (Target == null) return;
+            
+            var diff = Target.position - transform.position;
             
             if (diff.magnitude <= _viewThreshold) {
                 Hide();
@@ -30,11 +32,11 @@ namespace Chuzaman.Managers {
         }
 
         public void Hide() {
-            _spriteRenderer.enabled = false;
+            _Sprite.enabled = false;
         }
 
         private void Show() {
-            if (!_spriteRenderer.enabled) _spriteRenderer.enabled = true;
+            if (!_Sprite.enabled) _Sprite.enabled = true;
         }
 
     }
