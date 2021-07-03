@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Chuza
   m_EditorClassIdentifier: 
   Speed: 15
-  SwipeThreshold: 7
+  SwipeThreshold: 10
   Sprite: {fileID: -36218044351304247, guid: c08c11cc98c9028469eb02a42e35965c, type: 3}
   LandingSound: {fileID: 8300000, guid: e35d08fe10dc929499385066f7359973, type: 3}
   CoinSound: {fileID: 8300000, guid: 6e72db24c48c0e34cbbf7496f90de160, type: 3}
