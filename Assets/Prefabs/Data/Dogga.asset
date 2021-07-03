@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dogga
   m_EditorClassIdentifier: 
   Speed: 15
+  SwipeThreshold: 7
   Sprite: {fileID: -380398836632243372, guid: c08c11cc98c9028469eb02a42e35965c, type: 3}
   LandingSound: {fileID: 8300000, guid: e35d08fe10dc929499385066f7359973, type: 3}
   CoinSound: {fileID: 8300000, guid: 6e72db24c48c0e34cbbf7496f90de160, type: 3}
-  ActivateSound: {fileID: 8300000, guid: ff5c4dcdd21b8c34eb9ddc9dc3ef7731, type: 3}

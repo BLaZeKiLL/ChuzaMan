@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 
 using UnityEditor;
-using UnityEditor.Build.Reporting;
 
 namespace Editor.Build {
 
@@ -9,23 +8,21 @@ namespace Editor.Build {
 
         private static readonly string CLIENT_PATH = "Build/Client";
         private static readonly string SERVER_PATH = "Build/Server";
+        private static readonly string ANDROID_PATH = "Build/Android";
         private static readonly string NAME = "chuzaman";
-        private static readonly string DOCKER = $"docker build --pull --rm -f \"Dockerfile\" --build-arg EXECUTABLE=\"{NAME}.x86_64\" -t {NAME}:latest \".\"";
+        private static readonly string DOCKER = $"docker build --pull --rm -f \"Dockerfile\" --build-arg EXECUTABLE=\"{NAME}.x86_64\" -t blazekill/{NAME}:latest \".\"";
         
         [MenuItem("Build/All")]
         public static void BuildAll() {
             ClientBuild();
-            var report = ServerBuild();
+            AndroidBuild();
+            ServerBuild();
 
-            if (report.summary.totalErrors == 0 || report.summary.totalWarnings == 0) {
-                DockerBuild();
-            }
-            
             EditorUtility.RevealInFinder(SERVER_PATH);
         }
         
         [MenuItem("Build/Client")]
-        public static BuildReport ClientBuild() {
+        public static void ClientBuild() {
             var scenes = EditorBuildSettings.scenes;
 
             var clientOptions = new BuildPlayerOptions {
@@ -36,11 +33,25 @@ namespace Editor.Build {
                 options = BuildOptions.CompressWithLz4HC
             };
 
-            return BuildPipeline.BuildPlayer(clientOptions);
+            BuildPipeline.BuildPlayer(clientOptions);
+        }
+        
+        [MenuItem("Build/Android")]
+        public static void AndroidBuild() {
+            var scenes = EditorBuildSettings.scenes;
+
+            var clientOptions = new BuildPlayerOptions {
+                scenes = EditorBuildSettingsScene.GetActiveSceneList(scenes),
+                locationPathName = $"{ANDROID_PATH}/{NAME}.apk",
+                target = BuildTarget.Android,
+                options = BuildOptions.CompressWithLz4HC
+            };
+
+            BuildPipeline.BuildPlayer(clientOptions);
         }
         
         [MenuItem("Build/Server")]
-        public static BuildReport ServerBuild() {
+        public static void ServerBuild() {
             var scenes = EditorBuildSettings.scenes;
 
             var serverOptions = new BuildPlayerOptions {
@@ -51,7 +62,11 @@ namespace Editor.Build {
                 options = BuildOptions.EnableHeadlessMode | BuildOptions.CompressWithLz4HC
             };
 
-            return BuildPipeline.BuildPlayer(serverOptions);
+            var report = BuildPipeline.BuildPlayer(serverOptions);
+            
+            if (report.summary.totalErrors == 0 || report.summary.totalWarnings == 0) {
+                DockerBuild();
+            }
         }
 
         [MenuItem("Build/Docker")]

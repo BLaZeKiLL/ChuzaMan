@@ -8,7 +8,6 @@ using Chuzaman.Net;
 using CodeBlaze.UI;
 
 using MLAPI;
-using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using MLAPI.Serialization.Pooled;
 using MLAPI.Spawning;
@@ -35,6 +34,11 @@ namespace Chuzaman.Player {
         private bool _Initialized;
         private ulong _ID;
         private int _Coins;
+        
+        private Vector2 _fingerDown;
+        private Vector2 _fingerUp;
+
+        private bool _swiped;
         
         private void Awake() {
             _Rigidbody = GetComponent<Rigidbody2D>();
@@ -76,7 +80,7 @@ namespace Chuzaman.Player {
                 if (_Direction != Vector2.zero) {
                     Land();
                 } else if (IsOwner) {
-                    GetInput();
+                    CheckInput();
                 }
             }
             
@@ -93,17 +97,16 @@ namespace Chuzaman.Player {
         private void OnTriggerEnter2D(Collider2D other) {
             if (!other.CompareTag("Coin")) return;
 
-            _AudioSource.PlayOneShot(_PlayerData.CoinSound);
-
             if (IsServer) {
                 Destroy(NetworkSpawnManager.SpawnedObjects[other.GetComponent<NetworkObject>().NetworkObjectId]);
                 _SessionManager.AddCoin(_ID);
             } else if (IsOwner) {
+                _AudioSource.PlayOneShot(_PlayerData.CoinSound);
                 _UI.SetCoinsCount(++_Coins);
             }
         }
 
-        private void GetInput() {
+        private void CheckInput() {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
                 _Direction = Vector2.up;
                 _Input.Value = _Direction;
@@ -120,11 +123,55 @@ namespace Chuzaman.Player {
                 _Direction = Vector2.right;
                 _Input.Value = _Direction;
             }
+            
+            foreach (var touch in Input.touches) {
+                switch (touch.phase) {
+                    case TouchPhase.Began:
+                        _fingerDown = touch.position;
+                        _swiped = false;
+
+                        break;
+                    case TouchPhase.Moved:
+                        _fingerUp = touch.position;
+                        var value = GetSwipe();
+
+                        if (value != Vector2.zero) {
+                            _Direction = value;
+                            _Input.Value = _Direction;
+                            _swiped = true;
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        private Vector2 GetSwipe() {
+            if (_swiped) return Vector2.zero;
+
+            var swipe = _fingerUp - _fingerDown;
+
+            if (!(swipe.magnitude >= _PlayerData.SwipeThreshold)) return Vector2.zero;
+
+            return -NormalizeSwipe();
+        }
+
+        private Vector2 NormalizeSwipe() {
+            var angle = Vector2.SignedAngle(Vector2.right, _fingerDown - _fingerUp);
+            
+            if (angle < 45f && angle >= -45f) return Vector2.right;
+            if (angle < 135f && angle >= 45f) return Vector2.up;
+            if (angle < -45f && angle >= -135f) return Vector2.down;
+            if ((angle < -135f && angle >= -180f) || (angle <= 180f && angle >= 135f)) return Vector2.left;
+            
+            return Vector2.zero;
         }
 
         private void Land() {
             // Play Sound
-            _AudioSource.PlayOneShot(_PlayerData.LandingSound);
+            if (IsOwner) {
+                _AudioSource.PlayOneShot(_PlayerData.LandingSound);
+            }
 
             // Rotate
             if (_Direction == Vector2.up) {

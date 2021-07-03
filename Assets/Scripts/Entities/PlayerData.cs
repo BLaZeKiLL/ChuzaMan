@@ -6,6 +6,7 @@ namespace Chuzaman.Entities {
     public class PlayerData : ScriptableObject {
 
         public float Speed = 15f;
+        public float SwipeThreshold = 10f;
         public Sprite Sprite;
         public AudioClip LandingSound;
         public AudioClip CoinSound;
