@@ -2998,7 +2998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DontDestroy: 1
   RunInBackground: 1
-  LogLevel: 1
+  LogLevel: 2
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1374797492}
@@ -3081,7 +3081,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87af99482ba84401af32c47b53dd3945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCount: 1
+  PlayerCount: 2
+  Domain: chuzaman.centralindia.azurecontainer.io
 --- !u!1 &1411841951
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using CodeBlaze.UI;
 
 using MLAPI;
 using MLAPI.SceneManagement;
+using MLAPI.Transports.UNET;
 
 using UnityEngine;
 
@@ -16,13 +17,17 @@ namespace Chuzaman.Net {
 
         public int PlayerCount = 2;
 
+        [SerializeField] private string Domain;
+        
         private NetworkManager _Manager;
+        private UNetTransport _Transport;
         private SessionManager _SessionManager;
 
         private int _CurrentLevel;
 
         protected void Awake() {
             _Manager = GetComponent<NetworkManager>();
+            _Transport = GetComponent<UNetTransport>();
             _SessionManager = GetComponent<SessionManager>();
         }
 
@@ -39,6 +44,11 @@ namespace Chuzaman.Net {
         }
         
         public void StartClient(Character character) {
+            if (!string.IsNullOrWhiteSpace(Domain)) {
+                var ip = System.Net.Dns.GetHostAddresses(Domain);
+                _Transport.ConnectAddress = ip[0].ToString();
+                CBSL.Logging.Logger.Info<NetworkController>($"Connecting to domain ip : {ip[0]}, Bounded : {ip.Length}");
+            }
             _Manager.NetworkConfig.ConnectionData = new []{ (byte) character };
             _Manager.StartClient();
         }
